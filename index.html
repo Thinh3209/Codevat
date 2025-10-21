@@ -18,15 +18,15 @@
     .overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.35);
     }
 
     h1 {
       position: absolute;
-      top: 15%;
+      top: 12%;
       width: 100%;
       text-align: center;
-      font-size: 3em;
+      font-size: 2.8em;
       animation: glow 3s infinite alternate;
     }
 
@@ -37,10 +37,10 @@
 
     .message {
       position: absolute;
-      top: 30%;
+      top: 28%;
       width: 100%;
       text-align: center;
-      font-size: 1.5em;
+      font-size: 1.4em;
       line-height: 1.8em;
       color: #ffe6f2;
       animation: fadeIn 4s ease-in-out;
@@ -54,14 +54,14 @@
     /* Slideshow */
     .slideshow {
       position: absolute;
-      bottom: 10%;
+      bottom: 12%;
       left: 50%;
       transform: translateX(-50%);
-      width: 300px;
-      height: 200px;
+      width: 320px;
+      height: 220px;
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 0 20px #ff99cc;
+      box-shadow: 0 0 25px #ff99cc;
     }
 
     .slideshow img {
@@ -82,20 +82,14 @@
       position: fixed;
       top: 0;
       border-radius: 50%;
-      opacity: 0.8;
+      opacity: 0.9;
       pointer-events: none;
       animation: fall linear forwards;
     }
 
     @keyframes fall {
-      0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(110vh) rotate(720deg);
-        opacity: 0;
-      }
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
     }
 
     /* Nút nhạc */
@@ -108,7 +102,7 @@
       border-radius: 50%;
       width: 50px;
       height: 50px;
-      font-size: 20px;
+      font-size: 22px;
       cursor: pointer;
       color: #fff;
       box-shadow: 0 0 10px #ff66b2;
@@ -123,10 +117,10 @@
 <body>
   <div class="overlay"></div>
 
-  <h1>💖Chúc mừng ngày Phụ Nữ Việt Nam 20/10💖</h1>
+  <h1>💖 Chúc mừng ngày Phụ Nữ Việt Nam 20/10 💖</h1>
   <div class="message">
-    Chúc em iu luôn xinh đẹp, hạnh phúc và rạng rỡ như những đóa hoa.<br>
-    Chúc em iu sớm có đc anh hihi💖💐
+    Chúc em yêu luôn xinh đẹp, hạnh phúc và rạng rỡ như những đóa hoa.<br>
+    Chúc em sớm có được anh nhé 😘💐
   </div>
 
   <div class="slideshow">
@@ -136,7 +130,7 @@
   </div>
 
   <button class="music-control" id="musicBtn">🔊</button>
-  <audio id="bgMusic" src="music.mp3" loop muted></audio>
+  <audio id="bgMusic" src="music.mp3" loop playsinline></audio>
 
   <script>
     // Slideshow
@@ -161,15 +155,14 @@
       document.body.appendChild(petal);
       setTimeout(() => petal.remove(), 10000);
     }
-    setInterval(createPetal, 200);
+    setInterval(createPetal, 250);
 
-    // Nhạc nền
+    // Nhạc nền 🎵
     const music = document.getElementById('bgMusic');
     const btn = document.getElementById('musicBtn');
     let playing = false;
 
     btn.addEventListener('click', () => {
-      music.muted = false;
       if (!playing) {
         music.play().catch(() => {});
         btn.textContent = '🔈';
@@ -180,10 +173,9 @@
       playing = !playing;
     });
 
-    // Phát nhạc khi người dùng click đầu tiên
+    // Phát nhạc khi người dùng click lần đầu
     document.body.addEventListener('click', function autoPlay() {
       if (!playing) {
-        music.muted = false;
         music.play().catch(() => {});
         btn.textContent = '🔈';
         playing = true;
