@@ -2,9 +2,13 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chúc mừng 20/10 💐</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>💐 Chúc mừng 20/10 💐</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -13,12 +17,13 @@
       background: url('22.jpg') no-repeat center center/cover;
       height: 100vh;
       color: #fff;
+      position: relative;
     }
 
     .overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.45);
     }
 
     h1 {
@@ -26,7 +31,7 @@
       top: 12%;
       width: 100%;
       text-align: center;
-      font-size: 2.5em;
+      font-size: clamp(1.5rem, 6vw, 3rem);
       animation: glow 3s infinite alternate;
       padding: 0 10px;
     }
@@ -41,11 +46,11 @@
       top: 30%;
       width: 100%;
       text-align: center;
-      font-size: 1.2em;
+      font-size: clamp(1rem, 4vw, 1.5rem);
       line-height: 1.8em;
       color: #ffe6f2;
+      padding: 0 15px;
       animation: fadeIn 4s ease-in-out;
-      padding: 0 20px;
     }
 
     @keyframes fadeIn {
@@ -56,13 +61,13 @@
     /* Slideshow */
     .slideshow {
       position: absolute;
-      bottom: 8%;
+      bottom: 12%;
       left: 50%;
       transform: translateX(-50%);
-      width: 85%;
-      max-width: 320px;
+      width: 85vw;
+      max-width: 340px;
       height: 200px;
-      border-radius: 20px;
+      border-radius: 15px;
       overflow: hidden;
       box-shadow: 0 0 20px #ff99cc;
     }
@@ -97,44 +102,29 @@
 
     /* Nút nhạc */
     .music-control {
-      position: absolute;
-      top: 15px;
-      right: 15px;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
       background: rgba(255,255,255,0.3);
       border: none;
       border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      font-size: 22px;
+      width: 60px;
+      height: 60px;
+      font-size: 26px;
       cursor: pointer;
       color: #fff;
       box-shadow: 0 0 10px #ff66b2;
       transition: transform 0.3s;
-      z-index: 999;
     }
 
     .music-control:hover {
       transform: scale(1.1);
     }
 
-    /* Responsive cho điện thoại nhỏ */
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 1.8em;
-        top: 10%;
-      }
-      .message {
-        font-size: 1em;
-        top: 28%;
-      }
+    @media (max-height: 500px) {
       .slideshow {
-        width: 90%;
-        height: 180px;
-      }
-      .music-control {
-        width: 45px;
-        height: 45px;
-        font-size: 18px;
+        bottom: 5%;
+        height: 150px;
       }
     }
   </style>
@@ -144,17 +134,18 @@
 
   <h1>💖 Chúc mừng ngày Phụ Nữ Việt Nam 20/10 💖</h1>
   <div class="message">
-    Chúc em iu luôn xinh đẹp, hạnh phúc và rạng rỡ như những đóa hoa 🌸<br>
+    Chúc em iu luôn xinh đẹp, hạnh phúc và rạng rỡ như những đóa hoa.<br>
     Chúc em iu sớm có đc anh hihi 💖💐
   </div>
 
   <div class="slideshow">
     <img src="11.jpg" class="active">
-    
+    <img src="12.jpg">
+    <img src="13.jpg">
   </div>
 
-  <button class="music-control" id="musicBtn">🔊</button>
-  <audio id="bgMusic" src="music.mp3" loop playsinline></audio>
+  <button class="music-control" id="musicBtn">🎵</button>
+  <audio id="bgMusic" src="lnyan.mp3" loop></audio>
 
   <script>
     // Slideshow
@@ -166,7 +157,7 @@
       slides[index].classList.add('active');
     }, 4000);
 
-    // Hoa rơi 🌸
+    // Hoa rơi
     function createPetal() {
       const petal = document.createElement('div');
       petal.classList.add('petal');
@@ -175,39 +166,38 @@
       petal.style.height = size;
       petal.style.left = Math.random() * 100 + 'vw';
       petal.style.backgroundColor = ['#ffb6c1', '#ffc0cb', '#ff69b4', '#ffe4e1'][Math.floor(Math.random() * 4)];
-      petal.style.animationDuration = (6 + Math.random() * 6) + 's';
+      petal.style.animationDuration = (5 + Math.random() * 5) + 's';
       document.body.appendChild(petal);
-      setTimeout(() => petal.remove(), 12000);
+      setTimeout(() => petal.remove(), 10000);
     }
-    setInterval(createPetal, 300);
+    setInterval(createPetal, 200);
 
-    // Nhạc nền 🎵
+    // Nhạc nền
     const music = document.getElementById('bgMusic');
     const btn = document.getElementById('musicBtn');
     let playing = false;
 
+    // Nhấn nút để bật/tắt nhạc
     btn.addEventListener('click', () => {
       if (!playing) {
         music.play().then(() => {
           btn.textContent = '🔈';
           playing = true;
-        }).catch(err => console.log(err));
+        }).catch(() => alert("Chạm màn hình để bật nhạc 🎶"));
       } else {
         music.pause();
-        btn.textContent = '🔊';
+        btn.textContent = '🎵';
         playing = false;
       }
     });
 
-    // Phát nhạc khi click vào màn hình lần đầu tiên
-    document.body.addEventListener('click', function startMusic() {
-      if (!playing) {
-        music.play().then(() => {
-          btn.textContent = '🔈';
-          playing = true;
-        }).catch(() => {});
-      }
-      document.body.removeEventListener('click', startMusic);
+    // Cho phép phát nhạc khi người dùng chạm màn hình đầu tiên (fix iOS)
+    document.body.addEventListener('touchstart', function enableSound() {
+      music.play().then(() => {
+        btn.textContent = '🔈';
+        playing = true;
+      }).catch(() => {});
+      document.body.removeEventListener('touchstart', enableSound);
     });
   </script>
 </body>
