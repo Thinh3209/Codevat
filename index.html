@@ -18,7 +18,7 @@
     .overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.35);
+      background: rgba(0, 0, 0, 0.4);
     }
 
     h1 {
@@ -26,8 +26,9 @@
       top: 12%;
       width: 100%;
       text-align: center;
-      font-size: 2.8em;
+      font-size: 2.5em;
       animation: glow 3s infinite alternate;
+      padding: 0 10px;
     }
 
     @keyframes glow {
@@ -37,13 +38,14 @@
 
     .message {
       position: absolute;
-      top: 28%;
+      top: 30%;
       width: 100%;
       text-align: center;
-      font-size: 1.4em;
+      font-size: 1.2em;
       line-height: 1.8em;
       color: #ffe6f2;
       animation: fadeIn 4s ease-in-out;
+      padding: 0 20px;
     }
 
     @keyframes fadeIn {
@@ -54,14 +56,15 @@
     /* Slideshow */
     .slideshow {
       position: absolute;
-      bottom: 12%;
+      bottom: 8%;
       left: 50%;
       transform: translateX(-50%);
-      width: 320px;
-      height: 220px;
+      width: 85%;
+      max-width: 320px;
+      height: 200px;
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 0 25px #ff99cc;
+      box-shadow: 0 0 20px #ff99cc;
     }
 
     .slideshow img {
@@ -82,7 +85,7 @@
       position: fixed;
       top: 0;
       border-radius: 50%;
-      opacity: 0.9;
+      opacity: 0.8;
       pointer-events: none;
       animation: fall linear forwards;
     }
@@ -95,8 +98,8 @@
     /* Nút nhạc */
     .music-control {
       position: absolute;
-      top: 20px;
-      right: 20px;
+      top: 15px;
+      right: 15px;
       background: rgba(255,255,255,0.3);
       border: none;
       border-radius: 50%;
@@ -107,10 +110,32 @@
       color: #fff;
       box-shadow: 0 0 10px #ff66b2;
       transition: transform 0.3s;
+      z-index: 999;
     }
 
     .music-control:hover {
       transform: scale(1.1);
+    }
+
+    /* Responsive cho điện thoại nhỏ */
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.8em;
+        top: 10%;
+      }
+      .message {
+        font-size: 1em;
+        top: 28%;
+      }
+      .slideshow {
+        width: 90%;
+        height: 180px;
+      }
+      .music-control {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+      }
     }
   </style>
 </head>
@@ -119,13 +144,13 @@
 
   <h1>💖 Chúc mừng ngày Phụ Nữ Việt Nam 20/10 💖</h1>
   <div class="message">
-    Chúc em yêu luôn xinh đẹp, hạnh phúc và rạng rỡ như những đóa hoa.<br>
-    Chúc em sớm có được anh nhé 😘💐
+    Chúc em iu luôn xinh đẹp, hạnh phúc và rạng rỡ như những đóa hoa 🌸<br>
+    Chúc em iu sớm có đc anh hihi 💖💐
   </div>
 
   <div class="slideshow">
     <img src="11.jpg" class="active">
-   
+    
   </div>
 
   <button class="music-control" id="musicBtn">🔊</button>
@@ -150,11 +175,11 @@
       petal.style.height = size;
       petal.style.left = Math.random() * 100 + 'vw';
       petal.style.backgroundColor = ['#ffb6c1', '#ffc0cb', '#ff69b4', '#ffe4e1'][Math.floor(Math.random() * 4)];
-      petal.style.animationDuration = (5 + Math.random() * 5) + 's';
+      petal.style.animationDuration = (6 + Math.random() * 6) + 's';
       document.body.appendChild(petal);
-      setTimeout(() => petal.remove(), 10000);
+      setTimeout(() => petal.remove(), 12000);
     }
-    setInterval(createPetal, 250);
+    setInterval(createPetal, 300);
 
     // Nhạc nền 🎵
     const music = document.getElementById('bgMusic');
@@ -163,23 +188,26 @@
 
     btn.addEventListener('click', () => {
       if (!playing) {
-        music.play().catch(() => {});
-        btn.textContent = '🔈';
+        music.play().then(() => {
+          btn.textContent = '🔈';
+          playing = true;
+        }).catch(err => console.log(err));
       } else {
         music.pause();
         btn.textContent = '🔊';
+        playing = false;
       }
-      playing = !playing;
     });
 
-    // Phát nhạc khi người dùng click lần đầu
-    document.body.addEventListener('click', function autoPlay() {
+    // Phát nhạc khi click vào màn hình lần đầu tiên
+    document.body.addEventListener('click', function startMusic() {
       if (!playing) {
-        music.play().catch(() => {});
-        btn.textContent = '🔈';
-        playing = true;
+        music.play().then(() => {
+          btn.textContent = '🔈';
+          playing = true;
+        }).catch(() => {});
       }
-      document.body.removeEventListener('click', autoPlay);
+      document.body.removeEventListener('click', startMusic);
     });
   </script>
 </body>
