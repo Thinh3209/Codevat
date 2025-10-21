@@ -79,18 +79,23 @@
 
     /* Hoa rơi */
     .petal {
-      position: absolute;
-      width: 15px;
-      height: 15px;
-      background-color: pink;
+      position: fixed;
+      top: 0;
       border-radius: 50%;
       opacity: 0.8;
-      animation: fall linear infinite;
+      pointer-events: none;
+      animation: fall linear forwards;
     }
 
     @keyframes fall {
-      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+      }
     }
 
     /* Nút nhạc */
@@ -126,75 +131,65 @@
 
   <div class="slideshow">
     <img src="11.jpg" class="active">
-    <img src="11.jpg">
+    <img src="12.jpg">
+    <img src="13.jpg">
   </div>
 
   <button class="music-control" id="musicBtn">🔊</button>
-  <audio id="bgMusic" src="music.mp3" loop autoplay muted></audio>
+  <audio id="bgMusic" src="music.mp3" loop muted></audio>
 
+  <script>
+    // Slideshow
+    const slides = document.querySelectorAll('.slideshow img');
+    let index = 0;
+    setInterval(() => {
+      slides[index].classList.remove('active');
+      index = (index + 1) % slides.length;
+      slides[index].classList.add('active');
+    }, 4000);
 
-<script>
-    btn.addEventListener('click', () => {
-  music.muted = false;
-  if (!playing) {
-    music.play();
-    btn.textContent = '🔈';
-  } else {
-    music.pause();
-    btn.textContent = '🔊';
-  }
-  playing = !playing;
-});
-
-  // Hiệu ứng slideshow
-  const slides = document.querySelectorAll('.slideshow img');
-  let index = 0;
-  setInterval(() => {
-    slides[index].classList.remove('active');
-    index = (index + 1) % slides.length;
-    slides[index].classList.add('active');
-  }, 4000);
-
-  // Hoa rơi
-  function createPetal() {
-    const petal = document.createElement('div');
-    petal.classList.add('petal');
-    petal.style.left = Math.random() * 100 + 'vw';
-    petal.style.animationDuration = (5 + Math.random() * 5) + 's';
-    document.body.appendChild(petal);
-    setTimeout(() => petal.remove(), 10000);
-  }
-  setInterval(createPetal, 300);
-
-  // Nhạc nền (bắt đầu khi người dùng tương tác)
-  const music = document.getElementById('bgMusic');
-  const btn = document.getElementById('musicBtn');
-  let playing = false;
-
-  btn.addEventListener('click', () => {
-    if (!playing) {
-      music.play().catch(err => {
-        console.log("Trình duyệt chặn phát tự động:", err);
-      });
-      btn.textContent = '🔈';
-    } else {
-      music.pause();
-      btn.textContent = '🔊';
+    // Hoa rơi 🌸
+    function createPetal() {
+      const petal = document.createElement('div');
+      petal.classList.add('petal');
+      const size = Math.random() * 10 + 10 + 'px';
+      petal.style.width = size;
+      petal.style.height = size;
+      petal.style.left = Math.random() * 100 + 'vw';
+      petal.style.backgroundColor = ['#ffb6c1', '#ffc0cb', '#ff69b4', '#ffe4e1'][Math.floor(Math.random() * 4)];
+      petal.style.animationDuration = (5 + Math.random() * 5) + 's';
+      document.body.appendChild(petal);
+      setTimeout(() => petal.remove(), 10000);
     }
-    playing = !playing;
-  });
+    setInterval(createPetal, 200);
 
-  // Gợi ý phát nhạc khi người dùng click bất kỳ đâu
-  document.body.addEventListener('click', function autoPlay() {
-    if (!playing) {
-      music.play().then(() => {
+    // Nhạc nền
+    const music = document.getElementById('bgMusic');
+    const btn = document.getElementById('musicBtn');
+    let playing = false;
+
+    btn.addEventListener('click', () => {
+      music.muted = false;
+      if (!playing) {
+        music.play().catch(() => {});
+        btn.textContent = '🔈';
+      } else {
+        music.pause();
+        btn.textContent = '🔊';
+      }
+      playing = !playing;
+    });
+
+    // Phát nhạc khi người dùng click đầu tiên
+    document.body.addEventListener('click', function autoPlay() {
+      if (!playing) {
+        music.muted = false;
+        music.play().catch(() => {});
         btn.textContent = '🔈';
         playing = true;
-      }).catch(() => {});
+      }
       document.body.removeEventListener('click', autoPlay);
-    }
-  });
-</script>
-
+    });
+  </script>
 </body>
 </html>
